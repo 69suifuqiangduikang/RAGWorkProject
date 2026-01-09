@@ -1,0 +1,7 @@
+python-docx
+numpy
+faiss-cpu
+requests
+gradio
+tqdm
+volcengine

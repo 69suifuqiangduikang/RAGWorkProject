@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="132116d4-36ee-4759-a181-dbd35584cba5" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/RAGWorkProject.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/build_index.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/chunker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/docx_loader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/embed_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/faiss_store.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/llm_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pdf_loader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/rag_chain.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="37yX9GxvYnSGejqhRysDVjRjhbf" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.config.executor": "Run",
+    "Python.docx_loader.executor": "Run",
+    "Python.llm_client.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "E:/BNU/sem1/courses/NLP/RAGWorkProject",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="llm_client" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="RAGWorkProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="ARK_API_KEY" value="126b9755-bc1b-493f-a424-361d0f78b8f8" />
+        <env name="DOUBAO_CHAT_MODEL" value="doubao-seed-1-8-251228" />
+        <env name="DOUBAO_EMBED_MODEL" value="doubao-embedding-vision-250615" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/llm_client.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-f2b7a9f6281b-6e1f45a539f7-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.29346.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="132116d4-36ee-4759-a181-dbd35584cba5" name="更改" comment="" />
+      <created>1767876131554</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1767876131554</updated>
+    </task>
+    <servers />
+  </component>
+</project>
