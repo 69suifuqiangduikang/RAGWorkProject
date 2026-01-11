@@ -2,7 +2,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
-
 from pypdf import PdfReader
 
 @dataclass
@@ -11,6 +10,10 @@ class DocItem:
     doc_name: str
     section: str
     source_id: str
+    is_heading: bool = False
+    heading_level: int = 0
+    heading_text: str = ""
+    hier_path: str = ""
 
 def load_pdf(path: str | Path) -> List[DocItem]:
     path = Path(path)
@@ -21,12 +24,14 @@ def load_pdf(path: str | Path) -> List[DocItem]:
         txt = (page.extract_text() or "").strip()
         if not txt:
             continue
-        out.append(
-            DocItem(
-                text=txt,
-                doc_name=path.name,
-                section=f"page_{i}",
-                source_id=f"{path.name}#p{i}",
-            )
-        )
+
+        # 先把每页当作一个“章节块”，hier_path = Page i
+        out.append(DocItem(
+            text=txt,
+            doc_name=path.name,
+            section=f"page_{i}",
+            source_id=f"{path.name}#p{i}",
+            is_heading=False,
+            hier_path=f"Page {i}",
+        ))
     return out

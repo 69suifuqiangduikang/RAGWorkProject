@@ -15,10 +15,14 @@ def main():
 
     # docx
     for p in DATA_DIR.glob("*.docx"):
+        if p.name.startswith("~$"):
+            continue
         items.extend(load_docx_items(p))
 
     # pdf
     for p in DATA_DIR.glob("*.pdf"):
+        if p.name.startswith("~$"):
+            continue
         items.extend(load_pdf(p))
 
     if not items:
@@ -27,6 +31,8 @@ def main():
     chunks = chunk_text(items, chunk_size=CHUNK_SIZE, overlap=OVERLAP)
     if not chunks:
         raise RuntimeError("No chunks produced.")
+
+    print(f"Loaded items: {len(items)} | Produced chunks: {len(chunks)}")
 
     embed = DoubaoEmbedClient()
     texts = [c.text for c in chunks]
@@ -45,11 +51,13 @@ def main():
             "source_id": c.source_id,
             "chunk_id": c.chunk_id,
             "text": c.text,
+            "hier_path": getattr(c, "hier_path", ""),
         })
 
     store = FaissStore()
     store.build(vectors, meta)
     store.save()
+    print("EMBED_MODEL =", getattr(embed, "model", None))
     print("✅ Knowledge base built and saved.")
 
 

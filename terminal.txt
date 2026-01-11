@@ -1,0 +1,12 @@
+$env:ARK_API_KEY="API_KEY"
+$env:DOUBAO_CHAT_MODEL="doubao-seed-1-8-251228"
+$env:DOUBAO_EMBED_MODEL="doubao-embedding-vision-250615"
+
+## Dialogue test command ##
+uv run python -c "from src.rag_chain import RAGChain; print(RAGChain().answer('YOUR QUESTION'))"
+
+## Rebuild knowledge base ##
+uv run python -m src.build_index
+
+## run app ##
+uv run python -m src.app
