@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="132116d4-36ee-4759-a181-dbd35584cba5" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/terminal.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kb/faiss.index" beforeDir="false" afterPath="$PROJECT_DIR$/kb/faiss.index" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kb/meta.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/kb/meta.jsonl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/build_index.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/build_index.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chunker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chunker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/docx_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/docx_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pdf_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pdf_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rag_chain.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rag_chain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,22 +31,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.config.executor": "Run",
-    "Python.docx_loader.executor": "Run",
-    "Python.llm_client.executor": "Run",
-    "Python.pdf_loader.executor": "Run",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "E:/BNU/sem1/courses/NLP/RAGWorkProject",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.docx_loader.executor&quot;: &quot;Run&quot;,
+    &quot;Python.llm_client.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pdf_loader.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/BNU/sem1/courses/NLP/RAGWorkProject&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="llm_client" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="RAGWorkProject" />
