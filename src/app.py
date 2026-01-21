@@ -54,9 +54,10 @@ def main():
             "- `uv run python -m src.app`\n"
             "- `server_port=7860`\n"
         )
-
-    demo.launch(server_name="127.0.0.1", server_port=7860)
-
+    # demo.launch(server_name="127.0.0.1", server_port=7860, root_path="/gradio-demo/")
+    # [Lu] Change settings to adapt nginx
+    demo.launch(root_path="/gradio-demo/")
+    
 
 if __name__ == "__main__":
     main()
