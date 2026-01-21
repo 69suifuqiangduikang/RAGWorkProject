@@ -1,0 +1,7 @@
+[01/21/26 16:40:54] INFO [UltraRAG.Client] Building configuration ./visrag.yaml
+[01/21/26 16:40:54] WARNING [UltraRAG.Client] No parameter.yaml found for benchmark, skipping
+[01/21/26 16:40:54] WARNING [UltraRAG.Client] No parameter.yaml found for retriever, skipping
+[01/21/26 16:40:54] WARNING [UltraRAG.Client] No parameter.yaml found for prompt, skipping
+[01/21/26 16:40:54] WARNING [UltraRAG.Client] No parameter.yaml found for generation, skipping
+[01/21/26 16:40:54] WARNING [UltraRAG.Client] No parameter.yaml found for evaluation, skipping
+[01/21/26 16:40:54] WARNING [UltraRAG.Client] No parameter.yaml found for custom, skipping
