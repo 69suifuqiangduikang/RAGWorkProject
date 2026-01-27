@@ -1,0 +1,13 @@
+{
+  "suggestion_id": "4520a589-e940-46e7-aa7a-80bb2122fe4e_0_20260127_154925",
+  "feedback_type": "better_suggestion",
+  "session_id": "4520a589-e940-46e7-aa7a-80bb2122fe4e",
+  "turn_id": 0,
+  "user_id": "user_001",
+  "query": "如何提交我写好的python训练程序？",
+  "original_answer": "很抱歉，提供的文档中没有相关信息。因此，我无法提供具体的提交方法。请查阅相关的项目要求或指导手册，或者联系项目负责人以获取详细指导。",
+  "suggested_answer": "请按以下步骤提交：1. 访问官网提交页面 2. 登录账户 3. 上传Python文件 4. 填写程序描述 5. 点击提交按钮",
+  "improvement_reason": "原答案太简洁，需要更详细的步骤",
+  "quality_score": 4,
+  "timestamp": "2026-01-27T15:49:25.728265"
+}

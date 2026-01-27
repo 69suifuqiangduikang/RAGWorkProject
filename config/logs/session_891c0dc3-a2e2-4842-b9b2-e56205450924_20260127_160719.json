@@ -1,0 +1,80 @@
+{
+  "session_id": "891c0dc3-a2e2-4842-b9b2-e56205450924",
+  "start_time": "2026-01-27T16:06:52.323173",
+  "end_time": "2026-01-27T16:07:19.996917",
+  "total_turns": 1,
+  "conversation_history": [
+    {
+      "query": "如何提交我写好的python训练程序？",
+      "use_retrieval": true,
+      "top_k": 5,
+      "timestamp": "2026-01-27T16:06:52.324838",
+      "turn_id": 0,
+      "session_context": {},
+      "answer": "根据您提供的文档图片，提交写好的 Python 训练程序主要有以下三种方式：\n\n### 1. 手动输入代码路径\n在创建训练任务的页面中，找到 **“Python代码”** 输入框，直接手动输入您的 Python 程序在服务器上的路径地址（如图 3-28 所示）。\n\n### 2. 从集群文件选取\n在“Python代码”输入框右侧，点击**文件选择器图标**（通常是一个文件夹形状的图标），在弹出的“文件选择器”窗口中，从集群目录中浏览并选中您需要使用的 `.py` 文件，点击“确认”后，系统会自动填充文件路径（见图 3-29 和图 3-30）。\n\n### 3. 从本地上传文件\n同样点击“Python代码”输入框右侧的**上传图标**，在弹出的本地文件浏览窗口中选择您电脑上的 `.py` 训练程序，点击“打开”进行上传。上传成功后，保存目录会自动填充到输入框内（见图 3-31 和图 3-32）。\n\n**注意事项（参考图 3-30 后的说明）：**\n*   **格式限制：** “Python Code”仅支持上传以 `.py` 为后缀的文件。\n*   **文件大小：** 如果文件大小超过 **20MB**，建议使用 WinSCP 等工具先行上传至集群，再通过方式 1 或方式 2 进行引用。\n*   **代码预览：** 填写或上传路径后，可以点击旁边的“预览”按钮（眼睛图标）来查看代码内容，确保文件正确（见图 3-34）。",
+      "retrieved_docs": [],
+      "full_rag_output": {
+        "answer": "根据您提供的文档图片，提交写好的 Python 训练程序主要有以下三种方式：\n\n### 1. 手动输入代码路径\n在创建训练任务的页面中，找到 **“Python代码”** 输入框，直接手动输入您的 Python 程序在服务器上的路径地址（如图 3-28 所示）。\n\n### 2. 从集群文件选取\n在“Python代码”输入框右侧，点击**文件选择器图标**（通常是一个文件夹形状的图标），在弹出的“文件选择器”窗口中，从集群目录中浏览并选中您需要使用的 `.py` 文件，点击“确认”后，系统会自动填充文件路径（见图 3-29 和图 3-30）。\n\n### 3. 从本地上传文件\n同样点击“Python代码”输入框右侧的**上传图标**，在弹出的本地文件浏览窗口中选择您电脑上的 `.py` 训练程序，点击“打开”进行上传。上传成功后，保存目录会自动填充到输入框内（见图 3-31 和图 3-32）。\n\n**注意事项（参考图 3-30 后的说明）：**\n*   **格式限制：** “Python Code”仅支持上传以 `.py` 为后缀的文件。\n*   **文件大小：** 如果文件大小超过 **20MB**，建议使用 WinSCP 等工具先行上传至集群，再通过方式 1 或方式 2 进行引用。\n*   **代码预览：** 填写或上传路径后，可以点击旁边的“预览”按钮（眼睛图标）来查看代码内容，确保文件正确（见图 3-34）。",
+        "retrieved_docs": [],
+        "raw_result": {
+          "final_result": {
+            "ans_ls": [
+              "根据您提供的文档图片，提交写好的 Python 训练程序主要有以下三种方式：\n\n### 1. 手动输入代码路径\n在创建训练任务的页面中，找到 **“Python代码”** 输入框，直接手动输入您的 Python 程序在服务器上的路径地址（如图 3-28 所示）。\n\n### 2. 从集群文件选取\n在“Python代码”输入框右侧，点击**文件选择器图标**（通常是一个文件夹形状的图标），在弹出的“文件选择器”窗口中，从集群目录中浏览并选中您需要使用的 `.py` 文件，点击“确认”后，系统会自动填充文件路径（见图 3-29 和图 3-30）。\n\n### 3. 从本地上传文件\n同样点击“Python代码”输入框右侧的**上传图标**，在弹出的本地文件浏览窗口中选择您电脑上的 `.py` 训练程序，点击“打开”进行上传。上传成功后，保存目录会自动填充到输入框内（见图 3-31 和图 3-32）。\n\n**注意事项（参考图 3-30 后的说明）：**\n*   **格式限制：** “Python Code”仅支持上传以 `.py` 为后缀的文件。\n*   **文件大小：** 如果文件大小超过 **20MB**，建议使用 WinSCP 等工具先行上传至集群，再通过方式 1 或方式 2 进行引用。\n*   **代码预览：** 填写或上传路径后，可以点击旁边的“预览”按钮（眼睛图标）来查看代码内容，确保文件正确（见图 3-34）。"
+            ]
+          },
+          "all_results": [
+            {
+              "step": "benchmark.get_data",
+              "memory": {
+                "memory_q_ls": [
+                  "如何提交我写好的python训练程序？"
+                ],
+                "memory_gt_ls": [
+                  []
+                ]
+              }
+            },
+            {
+              "step": "retriever.retriever_init",
+              "memory": {}
+            },
+            {
+              "step": "retriever.retriever_search",
+              "memory": {
+                "memory_ret_psg": [
+                  [
+                    "/root/workspace/RAGWorkProject/data/utr_saved/image/AIC_UserGuidance/page_30.jpg",
+                    "/root/workspace/RAGWorkProject/data/utr_saved/image/AIC_UserGuidance/page_29.jpg",
+                    "/root/workspace/RAGWorkProject/data/utr_saved/image/AIC_UserGuidance/page_28.jpg",
+                    "/root/workspace/RAGWorkProject/data/utr_saved/image/AIC_UserGuidance/page_94.jpg",
+                    "/root/workspace/RAGWorkProject/data/utr_saved/image/AIC_UserGuidance/page_26.jpg"
+                  ]
+                ]
+              }
+            },
+            {
+              "step": "generation.generation_init",
+              "memory": {}
+            },
+            {
+              "step": "prompt.qa_boxed",
+              "memory": {
+                "memory_prompt_ls": [
+                  "Please answer the following question based on both the text and the provided images.\nThink step by step, use evidence from the images whenever possible, and give a clear, factual answer.\nIf the images are unclear or insufficient, say so briefly.\n\nQuestion: 如何提交我写好的python训练程序？"
+                ]
+              }
+            },
+            {
+              "step": "generation.multimodal_generate",
+              "memory": {
+                "memory_ans_ls": [
+                  "根据您提供的文档图片，提交写好的 Python 训练程序主要有以下三种方式：\n\n### 1. 手动输入代码路径\n在创建训练任务的页面中，找到 **“Python代码”** 输入框，直接手动输入您的 Python 程序在服务器上的路径地址（如图 3-28 所示）。\n\n### 2. 从集群文件选取\n在“Python代码”输入框右侧，点击**文件选择器图标**（通常是一个文件夹形状的图标），在弹出的“文件选择器”窗口中，从集群目录中浏览并选中您需要使用的 `.py` 文件，点击“确认”后，系统会自动填充文件路径（见图 3-29 和图 3-30）。\n\n### 3. 从本地上传文件\n同样点击“Python代码”输入框右侧的**上传图标**，在弹出的本地文件浏览窗口中选择您电脑上的 `.py` 训练程序，点击“打开”进行上传。上传成功后，保存目录会自动填充到输入框内（见图 3-31 和图 3-32）。\n\n**注意事项（参考图 3-30 后的说明）：**\n*   **格式限制：** “Python Code”仅支持上传以 `.py` 为后缀的文件。\n*   **文件大小：** 如果文件大小超过 **20MB**，建议使用 WinSCP 等工具先行上传至集群，再通过方式 1 或方式 2 进行引用。\n*   **代码预览：** 填写或上传路径后，可以点击旁边的“预览”按钮（眼睛图标）来查看代码内容，确保文件正确（见图 3-34）。"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "status": "success",
+      "feedback_functions": {
+        "like": 

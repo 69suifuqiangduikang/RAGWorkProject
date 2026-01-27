@@ -1,0 +1,15 @@
+# RAG Backend Config
+# 将API与模型配置从代码迁移到此文件。
+
+rag:
+  # 用于RAG模式生成的模型与API设置
+  model: "openai/gpt-4o-mini-2024-07-18"
+  base_url: "https://openrouter.ai/api/v1/"
+  # 支持从环境变量读取，格式: ENV:VAR_NAME
+  api_key: "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"
+
+no_retrieval:
+  # 用于无检索对话的模型与API设置
+  model: "openai/gpt-4o-mini-2024-07-18"
+  base_url: "https://openrouter.ai/api/v1/"
+  api_key: "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"

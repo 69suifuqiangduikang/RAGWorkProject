@@ -1,0 +1,12 @@
+{
+  "feedback_id": "4520a589-e940-46e7-aa7a-80bb2122fe4e_0_20260127_154925",
+  "feedback_type": "detailed_feedback",
+  "session_id": "4520a589-e940-46e7-aa7a-80bb2122fe4e",
+  "turn_id": 0,
+  "user_id": "user_001",
+  "query": "如何提交我写好的python训练程序？",
+  "answer": "很抱歉，提供的文档中没有相关信息。因此，我无法提供具体的提交方法。请查阅相关的项目要求或指导手册，或者联系项目负责人以获取详细指导。",
+  "feedback_text": "答案缺少具体的代码示例",
+  "feedback_category": "完整性",
+  "timestamp": "2026-01-27T15:49:25.727050"
+}
