@@ -259,6 +259,30 @@ class UltraData:
         self._extract_io(pipeline.get("pipeline", []))
         # Store history of memory states after each step
         self.snapshots: List[Dict[str, Any]] = []
+        self.enable_snapshots = self._read_bool_env(
+            "ULTRARAG_ENABLE_SNAPSHOTS", default=True
+        )
+        self.enable_memory_output = self._read_bool_env(
+            "ULTRARAG_ENABLE_MEMORY_OUTPUT", default=True
+        )
+        self.max_snapshots = self._read_int_env("ULTRARAG_MAX_SNAPSHOTS", default=0)
+
+    @staticmethod
+    def _read_bool_env(key: str, default: bool = True) -> bool:
+        raw = os.getenv(key)
+        if raw is None:
+            return default
+        return str(raw).strip().lower() not in ("0", "false", "no", "off")
+
+    @staticmethod
+    def _read_int_env(key: str, default: int = 0) -> int:
+        raw = os.getenv(key)
+        if raw is None:
+            return default
+        try:
+            return max(0, int(str(raw).strip()))
+        except ValueError:
+            return default
 
     def _canonical_mem(self, name: str) -> str:
         """Convert memory variable name to canonical format.
@@ -788,6 +812,9 @@ class UltraData:
                     updated_mem_keys.append(mem_key_updated)
 
         # -------- record snapshot --------
+        if not self.enable_snapshots:
+            return data
+
         def _serialise(obj):
             """Recursively convert FastMCP Message / TextContent objects to plain text for JSON."""
             if isinstance(obj, list):
@@ -815,6 +842,8 @@ class UltraData:
             "memory": mem_for_step,
         }
         self.snapshots.append(snapshot)
+        if self.max_snapshots and len(self.snapshots) > self.max_snapshots:
+            self.snapshots = self.snapshots[-self.max_snapshots :]
         logger.debug(
             f"Saved data for {server_name}.{tool_name} to global_vars: {self.global_vars}"
         )
@@ -833,6 +862,10 @@ class UltraData:
                 benchmark_name = benchmark_cfg["benchmark"]["name"]
             else:
                 benchmark_name = ""
+
+        if not self.enable_snapshots or not self.enable_memory_output:
+            logger.debug("Memory output disabled; skipping write.")
+            return
 
         output_dir = Path("output")
         output_dir.mkdir(parents=True, exist_ok=True)

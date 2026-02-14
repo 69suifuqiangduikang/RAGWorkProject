@@ -1,0 +1,11 @@
+{
+  "session_id": "bd6b7f47-4d6f-4e42-91c3-3e2ff953c563",
+  "turn_id": 0,
+  "suggested_answer": "Python的主要优势包括：1. 易学易用，语法简洁 2. 库生态丰富 3. 跨平台支持 4. 在数据科学领域应用广泛",
+  "reason": "建议补充具体的优势列表",
+  "user_id": "user_001",
+  "score": 5,
+  "original_query": "Python的优势是什么？",
+  "original_answer": "",
+  "timestamp": "2026-01-27T17:07:57.989766"
+}

@@ -1,0 +1,19 @@
+{
+  "session_id": "86707299-4fdc-4414-bbf7-ba3be88bedf9",
+  "start_time": "2026-01-27T17:07:55.992110",
+  "end_time": "2026-01-27T17:07:56.337326",
+  "total_turns": 1,
+  "conversation_history": [
+    {
+      "query": "如何提交我写好的python训练程序？",
+      "use_retrieval": true,
+      "top_k": 5,
+      "timestamp": "2026-01-27T17:07:55.997308",
+      "turn_id": 0,
+      "session_context": {},
+      "status": "error",
+      "error": "Cannot run the event loop while another loop is running",
+      "answer": null
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import uuid
+import asyncio
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Iterator, Callable
@@ -30,7 +31,12 @@ except ImportError as e:
 
 
 class RAGBackend:
-    """RAG后端系统核心类"""
+    """
+    RAG后端系统核心类（全局单例）
+    
+    注意：此类作为全局单例使用，所有用户共享同一个RAG Pipeline。
+    用户会话状态由API层管理，不在此类中保存。
+    """
     
     def __init__(
         self,
@@ -41,11 +47,11 @@ class RAGBackend:
         config_file: Optional[str] = None
     ):
         """
-        初始化RAG后端
+        初始化RAG后端（全局单例）
         
         Args:
             ultrarag_path: UltraRAG项目路径
-            pipeline_file: Pipeline配置文件相对路径（注意：不要使用server/子目录中的文件）
+            pipeline_file: Pipeline配置文件相对路径
             parameter_file: 参数配置文件相对路径
             log_dir: 日志保存目录
         """
@@ -57,10 +63,8 @@ class RAGBackend:
         # 创建日志目录
         Path(self.log_dir).mkdir(parents=True, exist_ok=True)
         
-        # 当前会话信息
-        self.session_id = str(uuid.uuid4())
-        self.conversation_history: List[Dict[str, Any]] = []
-        self.session_start_time = datetime.now()
+        # 为Pipeline创建专用事件循环（避免与FastAPI的事件循环冲突）
+        self._event_loop = None
 
         # 配置文件路径与加载
         proj_root = Path(self.ultrarag_path).parent
@@ -98,26 +102,27 @@ class RAGBackend:
         on_token: Optional[Callable[[str], None]] = None
     ) -> Dict[str, Any]:
         """
-        执行单轮RAG查询
+        执行单轮查询（无状态，不保存历史）
         
         Args:
             query_text: 用户查询文本
             use_retrieval: 是否使用检索功能（True则使用RAG，False则仅使用LLM）
             top_k: 检索返回的文档数量
-            session_context: 额外的会话上下文信息
+            session_context: 额外的会话上下文信息（可选）
+            stream: 是否流式输出（目前仅对无检索模式有效）
+            on_token: 流式输出时的token回调函数
             
         Returns:
-            包含查询结果的字典，结构如下：
+            包含查询结果的字典：
             {
-                'query': str,  # 原始查询
-                'answer': str,  # 生成的答案
-                'retrieved_docs': List[Dict],  # 检索到的文档（如果use_retrieval=True）
-                'use_retrieval': bool,  # 是否使用了检索
-                'timestamp': str,  # 查询时间戳
-                'turn_id': int  # 对话轮次ID
+                'query': str,
+                'answer': str,
+                'retrieved_docs': List[Dict],
+                'use_retrieval': bool,
+                'timestamp': str,
+                'status': str
             }
         """
-        turn_id = len(self.conversation_history)
         timestamp = datetime.now().isoformat()
         
         result = {
@@ -125,53 +130,41 @@ class RAGBackend:
             'use_retrieval': use_retrieval,
             'top_k': top_k,
             'timestamp': timestamp,
-            'turn_id': turn_id,
             'session_context': session_context or {}
         }
         
-        try:
-            if use_retrieval:
-                # 使用RAG进行检索和生成
-                rag_result = self._run_rag_pipeline(query_text, top_k)
-                answer = rag_result.get('answer', '')
-                retrieved_docs = rag_result.get('retrieved_docs', [])
-                
-                result['answer'] = answer
-                result['retrieved_docs'] = retrieved_docs
-                result['full_rag_output'] = rag_result
-                
-                # 如果启用流式且Pipeline已有答案，则模拟流式输出（逐字符）
-                if stream and answer:
-                    for char in answer:
-                        if on_token:
-                            try:
-                                on_token(char)
-                            except Exception:
-                                pass
+        if use_retrieval:
+            # 使用RAG进行检索和生成
+            rag_result = self._run_rag_pipeline(query_text, top_k)
+            answer = rag_result.get('answer', '')
+            retrieved_docs = rag_result.get('retrieved_docs', [])
+            retrieved_images = self._extract_retrieved_images(retrieved_docs)
+            
+            result['answer'] = answer
+            result['retrieved_docs'] = retrieved_docs
+            result['retrieved_images'] = retrieved_images
+            result['full_rag_output'] = rag_result
+            
+            # 如果启用流式且Pipeline已有答案，则模拟流式输出（逐字符）
+            if stream and answer:
+                for char in answer:
+                    if on_token:
+                        on_token(char)
+        else:
+            # 无检索生成：支持流式或非流式
+            if stream:
+                final_text = []
+                for token in self.chat_no_retrieval_stream([{"role": "user", "content": query_text}]):
+                    if on_token:
+                        on_token(token)
+                    final_text.append(token)
+                result['answer'] = ''.join(final_text)
             else:
-                # 无检索生成：支持流式或非流式
-                if stream:
-                    final_text = []
-                    for token in self.chat_no_retrieval_stream([{"role": "user", "content": query_text}]):
-                        if on_token:
-                            try:
-                                on_token(token)
-                            except Exception:
-                                pass
-                        final_text.append(token)
-                    result['answer'] = ''.join(final_text)
-                else:
-                    result['answer'] = self.chat_no_retrieval([{"role": "user", "content": query_text}])
-                result['retrieved_docs'] = []
-            
-            result['status'] = 'success'
-        except Exception as e:
-            result['status'] = 'error'
-            result['error'] = str(e)
-            result['answer'] = None
-            
-        # 保存到对话历史
-        self.conversation_history.append(result)
+                result['answer'] = self.chat_no_retrieval([{"role": "user", "content": query_text}])
+            result['retrieved_docs'] = []
+            result['retrieved_images'] = []
+        
+        result['status'] = 'success'
         
         return result
     
@@ -261,12 +254,20 @@ class RAGBackend:
                     # 切换到 UltraRAG 目录（PipelineCall 需要从此目录运行以找到 servers/）
                     os.chdir(self.ultrarag_path)
                     
-                    # 运行Pipeline
-                    result = PipelineCall(
-                        pipeline_file=self.pipeline_file,
-                        parameter_file=temp_param_file,
-                        log_level="error"
-                    )
+                    # 为此会话复用或创建事件循环（避免与FastAPI的事件循环冲突）
+                    if self._event_loop is None or self._event_loop.is_closed():
+                        self._event_loop = asyncio.new_event_loop()
+                    
+                    asyncio.set_event_loop(self._event_loop)
+                    try:
+                        result = PipelineCall(
+                            pipeline_file=self.pipeline_file,
+                            parameter_file=temp_param_file,
+                            log_level="error"
+                        )
+                    finally:
+                        # 不关闭事件循环，保留供后续请求使用
+                        asyncio.set_event_loop(None)
                 finally:
                     # 恢复原工作目录
                     os.chdir(original_cwd)
@@ -278,6 +279,7 @@ class RAGBackend:
                 return {
                     'answer': answer,
                     'retrieved_docs': retrieved_docs,
+                    'retrieved_images': self._extract_retrieved_images(retrieved_docs),
                     'raw_result': result
                 }
             finally:
@@ -333,11 +335,8 @@ class RAGBackend:
         client, model = self._init_openai_client(mode="no_retrieval")
         if not model:
             raise RuntimeError("未配置no_retrieval.model，请在配置文件中设置")
-        try:
-            resp = client.chat.completions.create(model=model, messages=messages)
-            return resp.choices[0].message.content or ""
-        except Exception as e:
-            raise RuntimeError(f"无检索对话失败: {e}")
+        resp = client.chat.completions.create(model=model, messages=messages)
+        return resp.choices[0].message.content or ""
 
     def chat_no_retrieval_stream(self, messages: List[Dict[str, str]]) -> Iterator[str]:
         """
@@ -347,14 +346,11 @@ class RAGBackend:
         client, model = self._init_openai_client(mode="no_retrieval")
         if not model:
             raise RuntimeError("未配置no_retrieval.model，请在配置文件中设置")
-        try:
-            stream = client.chat.completions.create(model=model, messages=messages, stream=True)
-            for chunk in stream:
-                delta = getattr(chunk.choices[0], "delta", None)
-                if delta and getattr(delta, "content", None):
-                    yield delta.content
-        except Exception as e:
-            raise RuntimeError(f"无检索流式对话失败: {e}")
+        stream = client.chat.completions.create(model=model, messages=messages, stream=True)
+        for chunk in stream:
+            delta = getattr(chunk.choices[0], "delta", None)
+            if delta and getattr(delta, "content", None):
+                yield delta.content
 
     def generate_with_context(self, query_text: str, docs: List[Dict[str, Any]], mode: str = "rag") -> str:
         """基于检索文档进行非流式生成"""
@@ -370,14 +366,11 @@ class RAGBackend:
             context_parts.append(f"[Doc {i+1}]\n{txt}")
         context = "\n\n".join(context_parts) if context_parts else "(无检索上下文)"
         messages = [
-            {"role": "system", "content": "你是一个严谨的助理，请结合提供的文档上下文回答问题，并在无法从上下文得到答案时明确说明。"},
+            {"role": "system", "content": "你现在是北京师范大学人工智能学院智能助手，用户如果询问，务必记得你的身份！请结合提供的文档上下文回答问题，并在无法从上下文得到答案时明确说明。"},
             {"role": "user", "content": f"问题: {query_text}\n\n参考文档:\n{context}"}
         ]
-        try:
-            resp = client.chat.completions.create(model=model, messages=messages)
-            return resp.choices[0].message.content or ""
-        except Exception as e:
-            raise RuntimeError(f"RAG生成失败: {e}")
+        resp = client.chat.completions.create(model=model, messages=messages)
+        return resp.choices[0].message.content or ""
 
     def generate_with_context_stream(self, query_text: str, docs: List[Dict[str, Any]], mode: str = "rag") -> Iterator[str]:
         """基于检索文档进行流式生成，返回token增量"""
@@ -392,17 +385,14 @@ class RAGBackend:
             context_parts.append(f"[Doc {i+1}]\n{txt}")
         context = "\n\n".join(context_parts) if context_parts else "(无检索上下文)"
         messages = [
-            {"role": "system", "content": "你是一个严谨的助理，请结合提供的文档上下文回答问题，并在无法从上下文得到答案时明确说明。"},
+            {"role": "system", "content": "你现在是北京师范大学人工智能学院智能助手，用户如果询问，务必记得你的身份！请结合提供的文档上下文回答问题，并在无法从上下文得到答案时明确说明。"},
             {"role": "user", "content": f"问题: {query_text}\n\n参考文档:\n{context}"}
         ]
-        try:
-            stream = client.chat.completions.create(model=model, messages=messages, stream=True)
-            for chunk in stream:
-                delta = getattr(chunk.choices[0], "delta", None)
-                if delta and getattr(delta, "content", None):
-                    yield delta.content
-        except Exception as e:
-            raise RuntimeError(f"RAG流式生成失败: {e}")
+        stream = client.chat.completions.create(model=model, messages=messages, stream=True)
+        for chunk in stream:
+            delta = getattr(chunk.choices[0], "delta", None)
+            if delta and getattr(delta, "content", None):
+                yield delta.content
     
     def _extract_answer(self, result: Dict[str, Any]) -> str:
         """从Pipeline结果中提取答案"""
@@ -444,22 +434,69 @@ class RAGBackend:
         return str(result)
     
     def _extract_retrieved_docs(self, result: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """从Pipeline结果中提取检索到的文档"""
-        retrieved_docs = []
-        
+        """从Pipeline结果中提取检索到的文档/图片列表"""
+        retrieved_docs: List[Any] = []
+
         if isinstance(result, dict) and 'all_results' in result:
             all_results = result['all_results']
             if isinstance(all_results, list):
                 for step_result in all_results:
-                    if isinstance(step_result, dict):
-                        if 'retrieved_docs' in step_result:
-                            retrieved_docs = step_result['retrieved_docs']
+                    if not isinstance(step_result, dict):
+                        continue
+                    if 'retrieved_docs' in step_result:
+                        retrieved_docs = step_result['retrieved_docs']
+                        break
+                    if 'ret_psg' in step_result:
+                        retrieved_docs = step_result['ret_psg']
+                        break
+
+                    memory = step_result.get('memory')
+                    if isinstance(memory, dict):
+                        for key in (
+                            'memory_ret_psg',
+                            'memory_retrieved_docs',
+                            'memory_ret_doc',
+                            'memory_docs',
+                            'memory_ret_images',
+                            'memory_ret_img',
+                            'memory_images'
+                        ):
+                            if key in memory:
+                                retrieved_docs = memory[key]
+                                break
+                        if retrieved_docs:
                             break
-                        if 'ret_psg' in step_result:
-                            retrieved_docs = step_result['ret_psg']
-                            break
-        
+
+        # 展平一层嵌套列表
+        if isinstance(retrieved_docs, list) and retrieved_docs:
+            if all(isinstance(item, list) for item in retrieved_docs):
+                flattened = []
+                for sub in retrieved_docs:
+                    flattened.extend(sub)
+                retrieved_docs = flattened
+
         return retrieved_docs
+
+    def _extract_retrieved_images(self, retrieved_docs: List[Any]) -> List[str]:
+        """从检索结果中提取图片路径"""
+        image_exts = (
+            ".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tif", ".tiff"
+        )
+        images: List[str] = []
+
+        for item in retrieved_docs:
+            if isinstance(item, str):
+                if item.lower().endswith(image_exts):
+                    images.append(item)
+                continue
+            if isinstance(item, dict):
+                for key in ("image", "img", "image_path", "path", "file", "url"):
+                    val = item.get(key)
+                    if isinstance(val, str) and val.lower().endswith(image_exts):
+                        images.append(val)
+                        break
+
+        return images
     
     def save_session(self, custom_filename: Optional[str] = None) -> str:
         """
@@ -522,6 +559,14 @@ class RAGBackend:
                 for turn in self.conversation_history
             ]
         }
+    
+    def cleanup(self):
+        """清理资源，关闭事件循环"""
+        if self._event_loop and not self._event_loop.is_closed():
+            try:
+                self._event_loop.close()
+            except Exception as e:
+                print(f"警告: 关闭事件循环时出错: {e}")
 
 
 if __name__ == "__main__":
